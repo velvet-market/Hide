@@ -1,24 +1,15 @@
-// Initialize butotn with users's prefered color
-let changeColor = document.getElementById("changeColor");
+document.addEventListener('DOMContentLoaded', documentEvents  , false);
 
-chrome.storage.sync.get("color", ({ color }) => {
-  changeColor.style.backgroundColor = color;
-});
+function myAction(input) { 
+  alert("The entered url is : " + input.value);
 
-// When the button is clicked, inject setPageBackgroundColor into current page
-changeColor.addEventListener("click", async () => {
-  let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    function: setPageBackgroundColor,
+}
+function documentEvents() {    
+  document.getElementById('confirm_btn').addEventListener('click', 
+    function() { myAction(document.getElementById('url_textbox'));
+    chrome.storage.sync.set({
+      "url": input.value
+    });
   });
-});
 
-// The body of this function will be execuetd as a content script inside the
-// current page
-function setPageBackgroundColor() {
-  chrome.storage.sync.get("color", ({ color }) => {
-    document.body.style.backgroundColor = color;
-  });
 }
