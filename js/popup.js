@@ -1,15 +1,17 @@
-document.addEventListener('DOMContentLoaded', documentEvents  , false);
+document.addEventListener("DOMContentLoaded", documentEvents, false);
 
-function myAction(input) { 
+const callAlert = (input) => {
   alert("The entered url is : " + input.value);
-
 }
-function documentEvents() {    
-  document.getElementById('confirm_btn').addEventListener('click', 
-    function() { myAction(document.getElementById('url_textbox'));
-    chrome.storage.sync.set({
-      "url": input.value
-    });
-  });
 
+function documentEvents() {
+  let button = document.getElementById("confirm_btn")
+  button.addEventListener("click", () => {
+    let urlBox = document.getElementById("url_textbox");
+    callAlert(urlBox);
+
+    chrome.storage.sync.set({
+      "url": urlBox.value
+    })
+  })
 }
