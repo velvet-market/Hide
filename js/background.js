@@ -39,7 +39,7 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 
   console.log(`url: ${DEFAULT_URL}`);
-  console.log(`hotkey: ${DEFAULT_TRIGGER}`);
+  console.log(`hotkey: ${DEFAULT_HIDE}`);
 });
 
 chrome.commands.onCommand.addListener((command) => {
