@@ -21,30 +21,30 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
 const DEFAULT_URL = "https://google.com/"
-const DEFAULT_HOTKEY = "Alt+P" // need to change manifest as well
 const DEFAULT_OPTION = "closeAll"
+const DEFAULT_TRIGGER = "Alt+P" // need to change manifest as well
+const DEFAULT_RESTORE = "Alt+O" // need to change manifest as well
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.sync.set({
     "url": DEFAULT_URL,
-    "hotkey": DEFAULT_HOTKEY,
+    "hotkey": DEFAULT_TRIGGER,
     "option": DEFAULT_OPTION
   });
 
   console.log(`url: ${DEFAULT_URL}`);
-  console.log(`hotkey: ${DEFAULT_HOTKEY}`);
+  console.log(`hotkey: ${DEFAULT_TRIGGER}`);
 });
 
 chrome.commands.onCommand.addListener((command) => {
-  chrome.storage.sync.get(["option"], (urlVal) => {
-    chrome.tabs.create({ 
-      url: urlVal.url
+  if (command === "trigger") {
+    chrome.storage.sync.get(["option"], (optionVal) => {
+      let currentOption = optionVal.option
+  
+      if (currentOption === "closeAll") closeAllTabs();
+      openNewWindow();
     });
-  });
-
-  closeAllTabs();
-  // openNewTab();
-  openNewWindow();
+  }
 });
 
 const closeAllTabs = () => {

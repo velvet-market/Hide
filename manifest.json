@@ -29,7 +29,13 @@
             "suggested_key": {
                 "default": "Alt+P"
             },
-            "description": "Trigger Panic"
+            "description": "Panik"
+        },
+        "restore": {
+            "suggested_key": {
+                "default": "Alt+O"
+            },
+            "description": "Calm"
         }
     }
   }
