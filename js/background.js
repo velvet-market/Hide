@@ -22,7 +22,7 @@ SOFTWARE. */
 
 const DEFAULT_URL = "https://www.google.com/"
 const DEFAULT_OPTION = "closeAll"
-const DEFAULT_TRIGGER = "Alt+P" // need to change manifest as well
+const DEFAULT_HIDE = "Alt+P" // need to change manifest as well
 const DEFAULT_RESTORE = "Alt+O" // need to change manifest as well
 
 let savedLinks = []
@@ -33,8 +33,9 @@ let dummyUrl = ""
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.sync.set({
     "url": DEFAULT_URL,
-    "hotkey": DEFAULT_TRIGGER,
-    "option": DEFAULT_OPTION
+    "option": DEFAULT_OPTION,
+    "hide": DEFAULT_HIDE,
+    "restore": DEFAULT_RESTORE,
   });
 
   console.log(`url: ${DEFAULT_URL}`);

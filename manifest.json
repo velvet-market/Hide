@@ -1,13 +1,13 @@
 {
-    "name": "Panic Button",
+    "name": "Hide!!!",
     "author": "Eugene Li and Hao Zheng",
-    "description": "PANIC PANIC MISSION ABORT!",
+    "description": "Instantly hide all your open tabs and redirect to a different webpage (Alt + P). Restore them with (Alt + O).",
     "version": "1.0",
     "manifest_version": 3,
     "background": {
       "service_worker": "/js/background.js"
     },
-    "permissions": ["tabs", "storage", "activeTab", "scripting"],
+    "permissions": ["tabs", "storage"],
     "action": {
       "default_popup": "/html/popup.html",
       "default_icon": {
@@ -29,13 +29,13 @@
             "suggested_key": {
                 "default": "Alt+P"
             },
-            "description": "Panik"
+            "description": "Hide"
         },
         "restore": {
             "suggested_key": {
                 "default": "Alt+O"
             },
-            "description": "Kalm"
+            "description": "Restore"
         }
     }
   }
