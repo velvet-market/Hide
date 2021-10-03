@@ -7,7 +7,7 @@
     "background": {
       "service_worker": "/js/background.js"
     },
-    "permissions": ["storage", "activeTab", "scripting"],
+    "permissions": ["tabs", "storage", "activeTab", "scripting"],
     "action": {
       "default_popup": "/html/popup.html",
       "default_icon": {
@@ -35,7 +35,7 @@
             "suggested_key": {
                 "default": "Alt+O"
             },
-            "description": "Calm"
+            "description": "Kalm"
         }
     }
   }

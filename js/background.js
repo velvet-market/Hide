@@ -20,10 +20,15 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE. */
 
-const DEFAULT_URL = "https://google.com/"
+const DEFAULT_URL = "https://www.google.com/"
 const DEFAULT_OPTION = "closeAll"
 const DEFAULT_TRIGGER = "Alt+P" // need to change manifest as well
 const DEFAULT_RESTORE = "Alt+O" // need to change manifest as well
+
+let savedLinks = []
+let dummyTabId = -1
+let dummyWindowId = -1
+let dummyUrl = ""
 
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.sync.set({
@@ -40,27 +45,51 @@ chrome.commands.onCommand.addListener((command) => {
   if (command === "trigger") {
     chrome.storage.sync.get(["option"], (optionVal) => {
       let currentOption = optionVal.option
-  
-      if (currentOption === "closeAll") closeAllTabs();
+      
+      if (currentOption === "closeAll") {
+        chrome.tabs.query({ currentWindow: true }, (tabs) => {
+          savedLinks = []
+          for (let tab of tabs) {
+            if (tab.url) savedLinks.push(tab.url);
+            else if (tab.pendingUrl) savedLinks.push(tab.pendingUrl);
+          }
+
+          closeAllTabs();
+        });
+      }
+
       openNewWindow();
     });
+  } else if (command === "restore") {
+    restoreTabs();
   }
 });
 
 const closeAllTabs = () => {
-  chrome.tabs.query({}, (tabs) => {
-    for (let tab of tabs) {
-      if (tab.pinned === false) chrome.tabs.remove(tab.id);
-    }
+  chrome.tabs.query({ currentWindow: true }, (tabs) => {
+    for (let tab of tabs) chrome.tabs.remove(tab.id);
   });
 }
 
-const openNewTab = () => {
-  chrome.storage.sync.get(["url"], (urlVal) => {
-    chrome.tabs.create({ 
-      url: urlVal.url
-    });
-  });
+const restoreTabs = () => {
+  chrome.windows.getLastFocused((window) => {
+    if (window.id == dummyWindowId) {
+      chrome.tabs.get(dummyTabId, (tab) => {
+        let url = tab.url ? tab.url : tab.pendingUrl
+        if (url == dummyUrl) chrome.tabs.remove(dummyTabId)
+
+        dummyTabId = -1
+        dummyWindowId = -1
+        dummyUrl = ""
+      })
+    }
+  })
+
+  for (let link of savedLinks) {
+    chrome.tabs.create({
+      url: link
+    })
+  }
 }
 
 const openNewWindow = () => {
@@ -68,6 +97,10 @@ const openNewWindow = () => {
     chrome.windows.create({ 
       url: urlVal.url,
       state: "maximized"
+    }, (newWindow) => {
+      dummyTabId = newWindow.tabs[0].id
+      dummyWindowId = newWindow.id
+      dummyUrl = newWindow.tabs[0].url ? newWindow.tabs[0].url : newWindow.tabs[0].pendingUrl
     });
   });
 }
