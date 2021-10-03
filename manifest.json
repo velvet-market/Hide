@@ -25,7 +25,7 @@
     },
     "options_page": "/html/options.html",
     "commands": {
-        "trigger": {
+        "hide": {
             "suggested_key": {
                 "default": "Alt+P"
             },

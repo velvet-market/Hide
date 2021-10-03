@@ -43,7 +43,7 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 chrome.commands.onCommand.addListener((command) => {
-  if (command === "trigger") {
+  if (command === "hide") {
     chrome.storage.sync.get(["option"], (optionVal) => {
       let currentOption = optionVal.option
       
