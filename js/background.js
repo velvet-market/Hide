@@ -37,8 +37,6 @@ chrome.runtime.onInstalled.addListener(() => {
     "hide": DEFAULT_HIDE,
     "restore": DEFAULT_RESTORE,
   });
-
-  console.log("here")
 });
 
 chrome.commands.onCommand.addListener((command) => {
