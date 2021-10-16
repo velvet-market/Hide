@@ -1,14 +1,9 @@
 $(document).ready(() => {  
   $("#confirm_btn").on("click", () => {
-    let urlBox = $("#url_textbox")
-    // callAlert(urlBox);
-    
+    $("#description").text("URL set to: " + $("#url_textbox").val());
     chrome.storage.sync.set({
       "url": urlBox.val()
     })
   })
-})
 
-const callAlert = (input) => {
-  alert("The entered url is : " + input.val());
-}
+})

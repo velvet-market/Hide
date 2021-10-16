@@ -1,15 +1,36 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Hide</title>     
-    <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>     
-    <script type="text/javascript" src="/js/popup.js"></script>
+    <title>Hide</title>  
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/index.css">
   </head>
   <body>   
-    <div style="padding: 20px 20px 20px 20px;">           
-        <p>Please enter an url : </p>         
-        <input id="url_textbox" />                   
-         <button id="confirm_btn" type="button">confirm</button>
-    </div>      
+   
+    <div class="d-flex flex-column">
+      <div class="d-flex justify-content-start" >
+        <p  id="logo" class="col"> logo </p>
+      </div>
+    
+      <span class=" mx-4 pb-3 rounded"   class="border border-3" style="background-color: white;">
+        <div class="d-flex justify-content-center mt-2">
+          <p id="description">Enter Desired URL </p> 
+          </div>
+        <div class="d-flex justify-content-center mb-3">
+          <input type="text" id="url_textbox" /> 
+        </div>
+        <div class="d-flex justify-content-center">
+          <button id="confirm_btn" button type="button" class="btn btn-danger">Confirm</button>
+        </div>
+      </span>
+    </div>
+    
+
+
+  
+    <script type="text/javascript" src="/js/jquery-3.6.0.min.js"></script>   
+    <script type="text/javascript" src="/js/bootstrap.min.js"></script> 
+    <script type="text/javascript" src="/js/popup.js"></script>
   </body>
 </html>
