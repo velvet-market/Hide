@@ -38,8 +38,7 @@ chrome.runtime.onInstalled.addListener(() => {
     "restore": DEFAULT_RESTORE,
   });
 
-  console.log(`url: ${DEFAULT_URL}`);
-  console.log(`hotkey: ${DEFAULT_HIDE}`);
+  console.log("here")
 });
 
 chrome.commands.onCommand.addListener((command) => {
