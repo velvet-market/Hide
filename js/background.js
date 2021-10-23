@@ -43,6 +43,8 @@ chrome.runtime.onInstalled.addListener(() => {
 
 chrome.commands.onCommand.addListener((command) => {
   if (command === "hide") {
+    changeLogo(command, savedLinks.length);
+
     chrome.storage.sync.get(["option", "historyClear"], (storageObj) => {
       let currentOption = storageObj.option
       let history = storageObj.historyClear
@@ -55,7 +57,7 @@ chrome.commands.onCommand.addListener((command) => {
             else if (tab.pendingUrl) savedLinks.push(tab.pendingUrl);
           }
 
-          //remove browser history
+        //remove browser history
         var oneHourAgo = (new Date()).getTime() - history;
         chrome.browsingData.remove({
           "since": oneHourAgo
@@ -70,6 +72,7 @@ chrome.commands.onCommand.addListener((command) => {
       openNewWindow();
     });
   } else if (command === "restore") {
+    changeLogo(command, savedLinks.length);
     restoreTabs();
   }
 });
@@ -81,37 +84,54 @@ const closeAllTabs = () => {
 }
 
 const restoreTabs = () => {
-  // chrome.windows.getLastFocused((window) => {
-  //   if (window.id == dummyWindowId) {
-  //     chrome.tabs.get(dummyTabId, (tab) => {
-  //       let url = tab.url ? tab.url : tab.pendingUrl
-  //       if (url == dummyUrl) chrome.tabs.remove(dummyTabId)
+  chrome.windows.getLastFocused((window) => {
+    if (window.id == dummyWindowId) {
+      chrome.tabs.get(dummyTabId, (tab) => {
+        let url = tab.url ? tab.url : tab.pendingUrl
+        if (url == dummyUrl) chrome.tabs.remove(dummyTabId)
 
-  //       dummyTabId = -1
-  //       dummyWindowId = -1
-  //       dummyUrl = ""
-  //     })
-  //   }
-  // })
+        dummyTabId = -1
+        dummyWindowId = -1
+        dummyUrl = ""
+      })
+    }
+  })
 
   for (let link of savedLinks) {
     chrome.tabs.create({
       url: link
     })
   }
+
+  savedLinks = [];
 }
 
 const openNewWindow = () => {
-  chrome.storage.sync.get(["url"], (urlVal) => {
+  chrome.storage.sync.get(["url"], (storageObj) => {
     chrome.windows.create({ 
-      url: urlVal.url,
-      state: "maximized"
+      url: storageObj.url,
+      state: "maximized",
+      focused: true
     }, (newWindow) => {
       dummyTabId = newWindow.tabs[0].id
       dummyWindowId = newWindow.id
       dummyUrl = newWindow.tabs[0].url ? newWindow.tabs[0].url : newWindow.tabs[0].pendingUrl
     });
   });
+}
+
+const changeLogo = (mode, length = -1) => {
+  let logoLink = "/images/";
+
+  if (mode == "hide") {
+    logoLink += "closed-48.png"
+  } else if (mode == "restore" || (length == 0 && mode == "hide")) {
+    logoLink += "open-48.png"
+  }
+
+  chrome.storage.sync.set({
+    "logo": logoLink
+  })
 }
 
 

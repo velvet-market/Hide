@@ -1,4 +1,8 @@
 $(document).ready(() => {  
+  chrome.storage.sync.get(["logo"], (storageObj) => {
+    $("#logo").attr("src", storageObj.logo)
+  })
+
   $("#confirm_btn").on("click", () => {
     let urlBox = $("#url_textbox")
     let newUrl = addhttp(urlBox.val())

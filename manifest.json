@@ -23,7 +23,6 @@
       "48": "/images/open-48.png",
       "128": "/images/open-128.png"
     },
-    "options_page": "/html/options.html",
     "commands": {
         "hide": {
             "suggested_key": {
