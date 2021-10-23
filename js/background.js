@@ -51,8 +51,8 @@ chrome.commands.onCommand.addListener((command) => {
   if (command === "hide") {
     chrome.storage.sync.get(["option", "historyClear", "clearTime"], (storageObj) => {
       let currentOption = storageObj.option
-      let history = storageObj.historyClear
-      let historyTime = storageObj.clearTime
+      let clearHistory = storageObj.historyClear
+      let clearTime = storageObj.clearTime
       if (currentOption === "closeAll") {
         chrome.tabs.query({ currentWindow: true }, (tabs) => {
           savedLinks = []
@@ -62,8 +62,9 @@ chrome.commands.onCommand.addListener((command) => {
           }
 
           //remove browser history
-          if (history === true) {
-            var time = (new Date()).getTime() - historyTime;
+          console.log(clearHistory)
+          if (clearHistory === true) {
+            let time = (new Date()).getTime() - clearTime;
             chrome.browsingData.remove({
                 "since": time
               }, {
@@ -71,7 +72,7 @@ chrome.commands.onCommand.addListener((command) => {
               }, );
           }
 
-          closeAllTabs();
+          // closeAllTabs();
         });
       }
 
