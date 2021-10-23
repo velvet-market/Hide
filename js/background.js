@@ -43,6 +43,10 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 });
 
+chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
+  chrome.tabs.create({ url: req.hotkeyUrl });
+});
+
 chrome.commands.onCommand.addListener((command) => {
   if (command === "hide") {
     chrome.storage.sync.get(["option", "historyClear", "clearTime"], (storageObj) => {
@@ -135,6 +139,8 @@ const changeLogo = (mode, length = -1) => {
     "logo": logoLink
   })
 }
+
+
 
 
 
