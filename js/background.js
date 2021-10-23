@@ -59,9 +59,9 @@ chrome.commands.onCommand.addListener((command) => {
 
           //remove browser history
           if (history === true) {
-            var oneHourAgo = (new Date()).getTime() - historyTime;
+            var time = (new Date()).getTime() - historyTime;
             chrome.browsingData.remove({
-                "since": oneHourAgo
+                "since": time
               }, {
                 "history": true,
               }, );
