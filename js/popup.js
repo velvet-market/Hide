@@ -12,7 +12,25 @@ $(document).ready(() => {
     })
 
     $("#description").text("URL set to: " + newUrl);
-    // callAlert(urlBox);
+
+    let toggleVal = $("#historyToggle").val()
+    if(toggleVal){
+      let timeVal = $("time").val
+      // if(timeVal==="15"){
+        
+    
+      // }
+    }
+  })
+
+  $("#historyToggle").on("change", () => {
+    let status = $("#historyToggle").is(":checked");
+    console.log(status)
+    if (status) {
+      $("#time").prop("disabled", false);
+    } else {
+      $("#time").prop("disabled", true);
+    }
   })
 })
 
