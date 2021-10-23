@@ -24,6 +24,7 @@ const DEFAULT_URL = "https://www.google.com/"
 const DEFAULT_OPTION = "closeAll"
 const DEFAULT_HIDE = "Alt+P" // need to change manifest as well
 const DEFAULT_RESTORE = "Alt+O" // need to change manifest as well
+const DEFAULT_HISTORYCLEAR = 1000 * 60 * 60;
 
 let savedLinks = []
 let dummyTabId = -1
@@ -36,6 +37,7 @@ chrome.runtime.onInstalled.addListener(() => {
     "option": DEFAULT_OPTION,
     "hide": DEFAULT_HIDE,
     "restore": DEFAULT_RESTORE,
+    "historyClear" : DEFAULT_HISTORYCLEAR,
   });
 
   console.log("here")
@@ -43,8 +45,9 @@ chrome.runtime.onInstalled.addListener(() => {
 
 chrome.commands.onCommand.addListener((command) => {
   if (command === "hide") {
-    chrome.storage.sync.get(["option"], (optionVal) => {
-      let currentOption = optionVal.option
+    chrome.storage.sync.get(["option", "historyClear"], (storageObj) => {
+      let currentOption = storageObj.option
+      let history = storageObj.historyClear
       
       if (currentOption === "closeAll") {
         chrome.tabs.query({ currentWindow: true }, (tabs) => {
@@ -53,6 +56,14 @@ chrome.commands.onCommand.addListener((command) => {
             if (tab.url) savedLinks.push(tab.url);
             else if (tab.pendingUrl) savedLinks.push(tab.pendingUrl);
           }
+
+          //remove browser history
+        var oneHourAgo = (new Date()).getTime() - history;
+        chrome.browsingData.remove({
+          "since": oneHourAgo
+        }, {
+          "history": true,
+        }, );
 
           closeAllTabs();
         });
@@ -104,4 +115,6 @@ const openNewWindow = () => {
     });
   });
 }
+
+
 
