@@ -25,7 +25,7 @@ const DEFAULT_OPTION = "closeAll"
 const DEFAULT_HIDE = "Alt+P" // need to change manifest as well
 const DEFAULT_RESTORE = "Alt+O" // need to change manifest as well
 const DEFAULT_HISTORYCLEAR = 1000 * 60 * 60;
-
+const DEFAULT_HISOTRYOPTION = false;
 let savedLinks = []
 let dummyTabId = -1
 let dummyWindowId = -1
@@ -37,16 +37,17 @@ chrome.runtime.onInstalled.addListener(() => {
     "option": DEFAULT_OPTION,
     "hide": DEFAULT_HIDE,
     "restore": DEFAULT_RESTORE,
-    "historyClear" : DEFAULT_HISTORYCLEAR,
+    "historyClear" : DEFAULT_HISOTRYOPTION,
+    "clearTime" :  DEFAULT_HISTORYCLEAR
   });
 });
 
 chrome.commands.onCommand.addListener((command) => {
   if (command === "hide") {
-    chrome.storage.sync.get(["option", "historyClear"], (storageObj) => {
+    chrome.storage.sync.get(["option", "historyClear","clearTime"], (storageObj) => {
       let currentOption = storageObj.option
       let history = storageObj.historyClear
-      
+      let historyTime = storageObj.clearTime
       if (currentOption === "closeAll") {
         chrome.tabs.query({ currentWindow: true }, (tabs) => {
           savedLinks = []
@@ -56,12 +57,13 @@ chrome.commands.onCommand.addListener((command) => {
           }
 
           //remove browser history
-        var oneHourAgo = (new Date()).getTime() - history;
+      if(history=== true ){
+        var oneHourAgo = (new Date()).getTime() - historyTime;
         chrome.browsingData.remove({
           "since": oneHourAgo
         }, {
           "history": true,
-        }, );
+        }, );}
 
           closeAllTabs();
         });
