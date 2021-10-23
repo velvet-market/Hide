@@ -39,8 +39,6 @@ chrome.runtime.onInstalled.addListener(() => {
     "restore": DEFAULT_RESTORE,
     "historyClear" : DEFAULT_HISTORYCLEAR,
   });
-
-  console.log("here")
 });
 
 chrome.commands.onCommand.addListener((command) => {
@@ -83,18 +81,18 @@ const closeAllTabs = () => {
 }
 
 const restoreTabs = () => {
-  chrome.windows.getLastFocused((window) => {
-    if (window.id == dummyWindowId) {
-      chrome.tabs.get(dummyTabId, (tab) => {
-        let url = tab.url ? tab.url : tab.pendingUrl
-        if (url == dummyUrl) chrome.tabs.remove(dummyTabId)
+  // chrome.windows.getLastFocused((window) => {
+  //   if (window.id == dummyWindowId) {
+  //     chrome.tabs.get(dummyTabId, (tab) => {
+  //       let url = tab.url ? tab.url : tab.pendingUrl
+  //       if (url == dummyUrl) chrome.tabs.remove(dummyTabId)
 
-        dummyTabId = -1
-        dummyWindowId = -1
-        dummyUrl = ""
-      })
-    }
-  })
+  //       dummyTabId = -1
+  //       dummyWindowId = -1
+  //       dummyUrl = ""
+  //     })
+  //   }
+  // })
 
   for (let link of savedLinks) {
     chrome.tabs.create({
