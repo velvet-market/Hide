@@ -64,6 +64,16 @@ chrome.commands.onCommand.addListener((command) => {
   }
 });
 
+chrome.runtime.onMessage.addListener(
+  function(request) {
+      if (request.msg === "hide") {
+        hide();
+      } else if (request.msg === "restore") {
+        changeLogo("restore", savedLinks.length);
+        restoreTabs();
+      }
+  }
+);
 const closeAllTabs = () => {
   chrome.tabs.query({ currentWindow: true }, (tabs) => {
     for (let tab of tabs) chrome.tabs.remove(tab.id);

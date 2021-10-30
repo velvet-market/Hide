@@ -14,6 +14,7 @@ $(document).ready(() => {
   addToggle()
   addPanic()
   addEnter()
+  addMessage(msg)
 })
 
 const addhttp = (url) => {
@@ -90,9 +91,7 @@ const addToggle = () => {
 }
 const addPanic = () =>{
   $("#panicBtn").on("click", () => {
-    chrome.runtime.sendMessage({
-      hotkeyUrl: "chrome://extensions/shortcuts"
-    })
+    addMessage("hide")  
   });
 }
 const addEnter =() =>{
@@ -114,4 +113,11 @@ const addEnter =() =>{
       }
      }
    });   
+}
+
+const addMessage = (msg)=>{
+  
+chrome.runtime.sendMessage({
+    msg: msg,
+});
 }
