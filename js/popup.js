@@ -1,11 +1,18 @@
 $(document).ready(() => {  
   chrome.storage.sync.get(["logo"], (storageObj) => {
-    $("#logo").attr("src", storageObj.logo)
+    $("#logo").attr("src", storageObj.logo);
+
+    if(storageObj.logo==="hide") {
+      $("#panicBtn").addClass("btn-success").removeClass("btn-danger")
+    } else if (storageObj.logo==="restore"){
+      $("#panicBtn").addClass("btn-danger").removeClass("btn-success")
+    }
   })
 
   addConfirm()
   addHotkey()
   addToggle()
+  addPanic()
 })
 
 const addhttp = (url) => {
@@ -67,7 +74,6 @@ const addHotkey = () => {
 const addToggle = () => {
   $("#historyToggle").on("change", () => {
     let status = $("#historyToggle").is(":checked");
-    console.log(status)
     if (status) {
       $("#time").prop("disabled", false);
       chrome.storage.sync.set({
@@ -80,4 +86,11 @@ const addToggle = () => {
       })
     }
   })
+}
+const addPanic = () =>{
+  $("#panicBtn").on("click", () => {
+    chrome.runtime.sendMessage({
+      hotkeyUrl: "chrome://extensions/shortcuts"
+    })
+  });
 }

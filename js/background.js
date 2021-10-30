@@ -132,7 +132,7 @@ const changeLogo = (mode, length = -1) => {
 
   if (mode == "hide") {
     logoLink += "closed-48.png"
-  } else if (mode == "restore" || (length == 0 && mode == "hide")) {
+  } else if (mode == "restore") {
     logoLink += "open-48.png"
   }
 
