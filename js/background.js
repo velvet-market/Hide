@@ -49,14 +49,7 @@ chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
 
 chrome.commands.onCommand.addListener((command) => {
   if (command === "hide") {
-    hide();
-  } else if (command === "restore") {
     changeLogo(command, savedLinks.length);
-    restoreTabs();
-  }
-});
-chrome.commands.onCommand.addListener((command) => {
-  if (command === "hide") {
     hide();
   } else if (command === "restore") {
     changeLogo(command, savedLinks.length);
@@ -65,8 +58,11 @@ chrome.commands.onCommand.addListener((command) => {
 });
 
 chrome.runtime.onMessage.addListener(
-  function(request) {
+  function(request, sender, sendResponse) {
+    console.log("hi")
+    console.log(request.msg)
       if (request.msg === "hide") {
+        changeLogo(command, savedLinks.length);
         hide();
       } else if (request.msg === "restore") {
         changeLogo("restore", savedLinks.length);
@@ -100,7 +96,7 @@ const hide =() =>{
           }, );
       }
 
-      // closeAllTabs();
+      closeAllTabs();
     });
 
     openNewWindow();

@@ -1,10 +1,11 @@
 $(document).ready(() => {  
   chrome.storage.sync.get(["logo"], (storageObj) => {
     $("#logo").attr("src", storageObj.logo);
+    console.log(storageObj.logo)
 
-    if(storageObj.logo==="hide") {
+    if(storageObj.logo==="/images/closed-48.png") {
       $("#panicBtn").addClass("btn-success").removeClass("btn-danger")
-    } else if (storageObj.logo==="restore"){
+    } else if (storageObj.logo==="/images/open-48.png"){
       $("#panicBtn").addClass("btn-danger").removeClass("btn-success")
     }
   })
@@ -91,7 +92,13 @@ const addToggle = () => {
 }
 const addPanic = () =>{
   $("#panicBtn").on("click", () => {
-    addMessage("hide")  
+    if($("#panicBtn").hasClass("btn-success")){
+      alert("1")
+      addMessage("hide")
+    }  else if ($("#panicBtn").hasClass("btn-danger")){
+      alert("2")
+      addMessage("restore")
+    }
   });
 }
 const addEnter =() =>{
@@ -116,8 +123,11 @@ const addEnter =() =>{
 }
 
 const addMessage = (msg)=>{
-  
-chrome.runtime.sendMessage({
-    msg: msg,
+alert(3)
+alert(msg) 
+chrome.runtime.sendMessage({  
+  msg: msg,
+
 });
+
 }
