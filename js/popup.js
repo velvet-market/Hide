@@ -13,6 +13,7 @@ $(document).ready(() => {
   addHotkey()
   addToggle()
   addPanic()
+  addEnter()
 })
 
 const addhttp = (url) => {
@@ -46,7 +47,7 @@ const addConfirm = () => {
         "url": newUrl
       })
 
-      $("#description").text("URL set to: " + newUrl);
+      $("#description").text("Changed URL :) ");
       // callAlert(urlBox);
     } else {
       $("#description").text("Invalid URL :(");
@@ -93,4 +94,24 @@ const addPanic = () =>{
       hotkeyUrl: "chrome://extensions/shortcuts"
     })
   });
+}
+const addEnter =() =>{
+  $("#urlTextBox").keypress(function (e) {
+    var key = e.which;
+    if(key == 13 && $("#urlTextBox").hover())  // the enter key code
+     {
+      let urlBox = $("#urlTextBox")
+      let newUrl = addhttp(urlBox.val())
+      if (validURL(newUrl)) {
+        chrome.storage.sync.set({
+          "url": newUrl
+        })
+  
+        $("#description").text("Changed URL :)");
+        // callAlert(urlBox);
+      } else {
+        $("#description").text("Invalid URL :(");
+      }
+     }
+   });   
 }

@@ -49,35 +49,15 @@ chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
 
 chrome.commands.onCommand.addListener((command) => {
   if (command === "hide") {
-    chrome.storage.sync.get(["option", "historyClear", "clearTime"], (storageObj) => {
-      let currentOption = storageObj.option
-      let clearHistory = storageObj.historyClear
-      let clearTime = storageObj.clearTime
-      if (currentOption === "closeAll") {
-        chrome.tabs.query({ currentWindow: true }, (tabs) => {
-          savedLinks = []
-          for (let tab of tabs) {
-            if (tab.url) savedLinks.push(tab.url);
-            else if (tab.pendingUrl) savedLinks.push(tab.pendingUrl);
-          }
-
-          //remove browser history
-          console.log(clearHistory)
-          if (clearHistory === true) {
-            let time = (new Date()).getTime() - clearTime;
-            chrome.browsingData.remove({
-                "since": time
-              }, {
-                "history": true,
-              }, );
-          }
-
-          // closeAllTabs();
-        });
-      }
-
-      openNewWindow();
-    });
+    hide();
+  } else if (command === "restore") {
+    changeLogo(command, savedLinks.length);
+    restoreTabs();
+  }
+});
+chrome.commands.onCommand.addListener((command) => {
+  if (command === "hide") {
+    hide();
   } else if (command === "restore") {
     changeLogo(command, savedLinks.length);
     restoreTabs();
@@ -87,6 +67,33 @@ chrome.commands.onCommand.addListener((command) => {
 const closeAllTabs = () => {
   chrome.tabs.query({ currentWindow: true }, (tabs) => {
     for (let tab of tabs) chrome.tabs.remove(tab.id);
+  });
+}
+const hide =() =>{
+  chrome.storage.sync.get(["option", "historyClear", "clearTime"], (storageObj) => {
+    let clearHistory = storageObj.historyClear
+    let clearTime = storageObj.clearTime
+      
+    chrome.tabs.query({ currentWindow: true }, (tabs) => {
+      savedLinks = []
+      for (let tab of tabs) {
+        if (tab.url) savedLinks.push(tab.url);
+        else if (tab.pendingUrl) savedLinks.push(tab.pendingUrl);
+      }
+
+      if (clearHistory === true) {
+        let time = (new Date()).getTime() - clearTime;
+        chrome.browsingData.remove({
+            "since": time
+          }, {
+            "history": true,
+          }, );
+      }
+
+      // closeAllTabs();
+    });
+
+    openNewWindow();
   });
 }
 
