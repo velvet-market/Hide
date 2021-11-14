@@ -44,33 +44,25 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
-  chrome.tabs.create({ url: req.hotkeyUrl });
-});
-
-// chrome.runtime.onMessage.addListener(
-//   function(request, sender, sendResponse) {
-//     console.log("hi")
-//     console.log(request.msg)
-//       if (request.msg === "hide") {
-//         changeLogo(command, savedLinks.length);
-//         hide();
-//       } else if (request.msg === "restore") {
-//         changeLogo("restore", savedLinks.length);
-//         restoreTabs();
-//       }
-//   }
-// );
-
-chrome.commands.onCommand.addListener((command) => {
-  if (command === "hide") {
-    changeLogo(command, savedLinks.length);
-    hide();
-  } else if (command === "restore") {
-    changeLogo(command, savedLinks.length);
-    restoreTabs();
+  if (req.type === "hotkey") chrome.tabs.create({url: req.hotKeyUrl});
+  else if (req.type === "message") {
+    controller(req.msg);
   }
 });
 
+chrome.commands.onCommand.addListener((command) => {
+  controller(command);
+});
+
+const controller = (command) => {
+  if (command === "hide") {
+    changeLogo(command);
+    hide();
+  } else if (command === "restore") {
+    changeLogo(command);
+    restoreTabs();
+  }
+}
 
 const closeAllTabs = () => {
   chrome.tabs.query({ currentWindow: true }, (tabs) => {
@@ -83,7 +75,7 @@ const hide = () =>{
     let clearHistory = storageObj.clearHistory
     let clearTime = storageObj.clearTime
       
-    chrome.tabs.query({ currentWindow: true }, (tabs) => {
+    chrome.tabs.query({currentWindow: true}, (tabs) => {
       savedLinks = []
       for (let tab of tabs) {
         if (tab.url) savedLinks.push(tab.url);
@@ -143,7 +135,7 @@ const openNewWindow = () => {
   });
 }
 
-const changeLogo = (mode, length = -1) => {
+const changeLogo = (mode) => {
   let logoLink = "/images/";
 
   if (mode == "hide") {

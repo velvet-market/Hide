@@ -1,7 +1,6 @@
 $(document).ready(() => {  
   chrome.storage.sync.get(["logo"], (storageObj) => {
     $("#logo").attr("src", storageObj.logo);
-    console.log(storageObj.logo)
 
     if(storageObj.logo==="/images/closed-48.png") {
       $("#panicBtn").addClass("btn-success").removeClass("btn-danger")
@@ -10,12 +9,11 @@ $(document).ready(() => {
     }
   })
 
-  addConfirm()
-  addHotkey()
-  addToggle()
-  addPanic()
-  addEnter()
-  addMessage(msg)
+  addConfirm();
+  addHotkey();
+  addToggle();
+  addPanic();
+  addEnter();
 })
 
 const addhttp = (url) => {
@@ -42,92 +40,91 @@ const callAlert = (input) => {
 
 const addConfirm = () => {
   $("#confirmBtn").on("click", () => {
-    let urlBox = $("#urlTextBox")
-    let newUrl = addhttp(urlBox.val())
-    if (validURL(newUrl)) {
-      chrome.storage.sync.set({
-        "url": newUrl
-      })
-
-      $("#description").text("Changed URL :) ");
-      // callAlert(urlBox);
-    } else {
-      $("#description").text("Invalid URL :(");
-    }
+    changeUrl();
 
     let toggleVal = $("#historyToggle").is(":checked");
     if (toggleVal) {
       let timeVal = $("#time").val() * 60000
 
       chrome.storage.sync.set({
-        "clearTime": timeVal
-      })
-    }
-  })
-}
-
-const addHotkey = () => {
-  $("#hotkeyBtn").on("click", () => {
-    chrome.runtime.sendMessage({
-      hotkeyUrl: "chrome://extensions/shortcuts"
-    })
-  });
-}
-
-const addToggle = () => {
-  $("#historyToggle").on("change", () => {
-    let status = $("#historyToggle").is(":checked");
-    if (status) {
-      $("#time").prop("disabled", false);
-      chrome.storage.sync.set({
+        "clearTime": timeVal,
         "clearHistory": true
       })
     } else {
-      $("#time").prop("disabled", true);
       chrome.storage.sync.set({
         "clearHistory": false
       })
     }
   })
 }
+
+const addEnter = () => {
+  $("#urlTextBox").keypress((e) => {
+    let key = e.which;
+    if (key == 13 && $("#urlTextBox").hover())  { // 13 = enter key code 
+      changeUrl();
+    }
+  });   
+}
+
+const changeUrl = () => {
+  let urlVal = $("#urlTextBox").val();
+  let newUrl = addhttp(urlVal);
+
+  if (urlVal !== "") {
+    if (validURL(newUrl)) {
+      chrome.storage.sync.set({
+        "url": newUrl
+      })
+
+      $("#description").text("Changed URL :)");
+      $("#description").css("color", "green");
+    } else {
+      $("#description").text("Invalid URL :(");
+      $("#description").css("color", "red");
+    }
+  } else {
+    $("#description").text("Enter redirect URL: ");
+    $("#description").css("color", "black");
+  }
+}
+
+const addHotkey = () => {
+  $("#hotkeyBtn").on("click", () => {
+    chrome.runtime.sendMessage({
+      type: "hotkey",
+      hotKeyUrl: "chrome://extensions/shortcuts"
+    })
+  });
+}
+
+const addMessage = (message) => {
+  chrome.runtime.sendMessage({  
+    type: "message",
+    msg: message,
+  });
+}
+
+const addToggle = () => {
+  let toggle = $("#historyToggle");
+  chrome.storage.sync.get(["clearHistory"], (storageObj) => {
+    toggle.prop('checked', storageObj.clearHistory);
+  })
+  
+  toggle.on("change", () => {
+    let status = $("#historyToggle").is(":checked");
+
+    if (status) $("#time").prop("disabled", false);
+    else $("#time").prop("disabled", true);
+  })
+}
+
 const addPanic = () =>{
   $("#panicBtn").on("click", () => {
     if($("#panicBtn").hasClass("btn-success")){
-      alert("1")
-      addMessage("hide")
-    }  else if ($("#panicBtn").hasClass("btn-danger")){
-      alert("2")
-      addMessage("restore")
+      addMessage("restore");
+    } else if ($("#panicBtn").hasClass("btn-danger")){
+      addMessage("hide");
     }
   });
-}
-const addEnter =() =>{
-  $("#urlTextBox").keypress(function (e) {
-    var key = e.which;
-    if(key == 13 && $("#urlTextBox").hover())  // the enter key code
-     {
-      let urlBox = $("#urlTextBox")
-      let newUrl = addhttp(urlBox.val())
-      if (validURL(newUrl)) {
-        chrome.storage.sync.set({
-          "url": newUrl
-        })
-  
-        $("#description").text("Changed URL :)");
-        // callAlert(urlBox);
-      } else {
-        $("#description").text("Invalid URL :(");
-      }
-     }
-   });   
-}
-
-const addMessage = (msg)=>{
-alert(3)
-alert(msg) 
-chrome.runtime.sendMessage({  
-  msg: msg,
-
-});
-
 }
