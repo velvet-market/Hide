@@ -5,7 +5,6 @@ Hide!!! is a Chrome extension that allows you to hide your tabs in a pinch ;). H
 You can download it [here.](https://chrome.google.com/webstore/detail/hide/dppkgbgooinkbjemcpddmldmppgfngik?hl=en)
 
 ## Usage
-1. Hold down a key when typing and wait for the pop-up to appear. Try it with uppercase letters, punctuation marks, and other symbols too.
-2. To select the character you desire, you can either press the number or click on the button itself. 
-3. There is also a shortcut you can use: while holding the key, press the number of the button before the popup appears.
-
+1. After installation, press the extension icon to open settings. Change to your heart's desire.
+2. If almost caught, press Alt + P (or your changed hotkey command) to immediately close all tabs and redirect to a new webpage (default is google.com).
+3. When the coast is clear, press Alt + Q (or your changed hotkey command) to restore your tabs.

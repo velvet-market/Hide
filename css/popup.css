@@ -7,3 +7,13 @@ body {
 #hotkeyBtn {
   color: white !important;
 }
+
+#panicBtn{
+  width: 60px;
+  height: 60px;
+  padding: 6px 0px;
+  border-radius: 40px;
+  font-size: 25px;
+  border: 0.175rem solid black;    
+  text-align: center;
+}

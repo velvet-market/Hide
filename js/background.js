@@ -49,43 +49,57 @@ chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
 
 chrome.commands.onCommand.addListener((command) => {
   if (command === "hide") {
-    chrome.storage.sync.get(["option", "historyClear", "clearTime"], (storageObj) => {
-      let currentOption = storageObj.option
-      let history = storageObj.historyClear
-      let historyTime = storageObj.clearTime
-      if (currentOption === "closeAll") {
-        chrome.tabs.query({ currentWindow: true }, (tabs) => {
-          savedLinks = []
-          for (let tab of tabs) {
-            if (tab.url) savedLinks.push(tab.url);
-            else if (tab.pendingUrl) savedLinks.push(tab.pendingUrl);
-          }
-
-          //remove browser history
-          if (history === true) {
-            var time = (new Date()).getTime() - historyTime;
-            chrome.browsingData.remove({
-                "since": time
-              }, {
-                "history": true,
-              }, );
-          }
-
-          closeAllTabs();
-        });
-      }
-
-      openNewWindow();
-    });
+    changeLogo(command, savedLinks.length);
+    hide();
   } else if (command === "restore") {
     changeLogo(command, savedLinks.length);
     restoreTabs();
   }
 });
 
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+    console.log("hi")
+    console.log(request.msg)
+      if (request.msg === "hide") {
+        changeLogo(command, savedLinks.length);
+        hide();
+      } else if (request.msg === "restore") {
+        changeLogo("restore", savedLinks.length);
+        restoreTabs();
+      }
+  }
+);
 const closeAllTabs = () => {
   chrome.tabs.query({ currentWindow: true }, (tabs) => {
     for (let tab of tabs) chrome.tabs.remove(tab.id);
+  });
+}
+const hide =() =>{
+  chrome.storage.sync.get(["option", "historyClear", "clearTime"], (storageObj) => {
+    let clearHistory = storageObj.historyClear
+    let clearTime = storageObj.clearTime
+      
+    chrome.tabs.query({ currentWindow: true }, (tabs) => {
+      savedLinks = []
+      for (let tab of tabs) {
+        if (tab.url) savedLinks.push(tab.url);
+        else if (tab.pendingUrl) savedLinks.push(tab.pendingUrl);
+      }
+
+      if (clearHistory === true) {
+        let time = (new Date()).getTime() - clearTime;
+        chrome.browsingData.remove({
+            "since": time
+          }, {
+            "history": true,
+          }, );
+      }
+
+      closeAllTabs();
+    });
+
+    openNewWindow();
   });
 }
 
@@ -131,7 +145,7 @@ const changeLogo = (mode, length = -1) => {
 
   if (mode == "hide") {
     logoLink += "closed-48.png"
-  } else if (mode == "restore" || (length == 0 && mode == "hide")) {
+  } else if (mode == "restore") {
     logoLink += "open-48.png"
   }
 
