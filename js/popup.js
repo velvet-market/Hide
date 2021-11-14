@@ -80,12 +80,12 @@ const addToggle = () => {
     if (status) {
       $("#time").prop("disabled", false);
       chrome.storage.sync.set({
-        "historyClear": true
+        "clearHistory": true
       })
     } else {
       $("#time").prop("disabled", true);
       chrome.storage.sync.set({
-        "historyClear": false
+        "clearHistory": false
       })
     }
   })

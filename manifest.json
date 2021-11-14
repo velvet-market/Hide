@@ -1,7 +1,7 @@
 {
     "name": "Hide!!! - Panic Button and Tab Manager",
     "author": "Eugene Li and Hao Zheng",
-    "description": "Instantly hide all your open tabs and redirect to a different webpage (Alt + P). Restore them with (Alt + O).",
+    "description": "Instantly hide and restore your open tabs.",
     "version": "1.1.1",
     "manifest_version": 3,
     "background": {

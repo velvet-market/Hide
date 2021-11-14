@@ -24,8 +24,8 @@ const DEFAULT_URL = "https://www.google.com/"
 const DEFAULT_OPTION = "closeAll"
 const DEFAULT_HIDE = "Alt+P" // need to change manifest as well
 const DEFAULT_RESTORE = "Alt+O" // need to change manifest as well
-const DEFAULT_HISTORYCLEAR = 1000 * 60 * 60;
-const DEFAULT_HISTORYOPTION = false;
+const DEFAULT_CLEARHISTORY = false;
+const DEFAULT_CLEARTIME = 1000 * 60 * 60;
 
 let savedLinks = []
 let dummyTabId = -1
@@ -38,14 +38,28 @@ chrome.runtime.onInstalled.addListener(() => {
     "option": DEFAULT_OPTION,
     "hide": DEFAULT_HIDE,
     "restore": DEFAULT_RESTORE,
-    "historyClear" : DEFAULT_HISTORYOPTION,
-    "clearTime" :  DEFAULT_HISTORYCLEAR
+    "clearHistory" : DEFAULT_CLEARHISTORY,
+    "clearTime" :  DEFAULT_CLEARTIME
   });
 });
 
 chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
   chrome.tabs.create({ url: req.hotkeyUrl });
 });
+
+// chrome.runtime.onMessage.addListener(
+//   function(request, sender, sendResponse) {
+//     console.log("hi")
+//     console.log(request.msg)
+//       if (request.msg === "hide") {
+//         changeLogo(command, savedLinks.length);
+//         hide();
+//       } else if (request.msg === "restore") {
+//         changeLogo("restore", savedLinks.length);
+//         restoreTabs();
+//       }
+//   }
+// );
 
 chrome.commands.onCommand.addListener((command) => {
   if (command === "hide") {
@@ -57,27 +71,16 @@ chrome.commands.onCommand.addListener((command) => {
   }
 });
 
-chrome.runtime.onMessage.addListener(
-  function(request, sender, sendResponse) {
-    console.log("hi")
-    console.log(request.msg)
-      if (request.msg === "hide") {
-        changeLogo(command, savedLinks.length);
-        hide();
-      } else if (request.msg === "restore") {
-        changeLogo("restore", savedLinks.length);
-        restoreTabs();
-      }
-  }
-);
+
 const closeAllTabs = () => {
   chrome.tabs.query({ currentWindow: true }, (tabs) => {
     for (let tab of tabs) chrome.tabs.remove(tab.id);
   });
 }
-const hide =() =>{
-  chrome.storage.sync.get(["option", "historyClear", "clearTime"], (storageObj) => {
-    let clearHistory = storageObj.historyClear
+
+const hide = () =>{
+  chrome.storage.sync.get(["option", "clearHistory", "clearTime"], (storageObj) => {
+    let clearHistory = storageObj.clearHistory
     let clearTime = storageObj.clearTime
       
     chrome.tabs.query({ currentWindow: true }, (tabs) => {
