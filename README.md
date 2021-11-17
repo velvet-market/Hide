@@ -1,6 +1,8 @@
 # Hide!!!
 Hide!!! is a Chrome extension that allows you to hide your tabs in a pinch ;). Hide!!! allows you to use custom shortcuts both (a) to close all tabs, redirect to a new webpage, and clear your recent history and (b) to restore them as they were when you closed them. The default shortcuts are `Alt + P` to hide and `Alt + O` to restore.
 
+![banner](assets/small-promo.png)
+
 ## Installation
 You can download it [here.](https://chrome.google.com/webstore/detail/hide/dppkgbgooinkbjemcpddmldmppgfngik?hl=en)
 
