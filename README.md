@@ -6,5 +6,5 @@ You can download it [here.](https://chrome.google.com/webstore/detail/hide/dppkg
 
 ## Usage
 1. After installation, press the extension icon to open settings. Change to your heart's desire.
-2. If almost caught, press Alt + P (or your changed hotkey command) to immediately close all tabs and redirect to a new webpage (default is google.com).
-3. When the coast is clear, press Alt + Q (or your changed hotkey command) to restore your tabs.
+2. If about to be caught, quickly press Alt + P (or your custom hotkey command) to immediately close all tabs and redirect to a new webpage (default is google.com).
+3. When the coast is clear, press Alt + Q (or your custom hotkey command) to restore your tabs.
