@@ -10,7 +10,6 @@ let dummyTabId = -1
 let dummyWindowId = -1
 let dummyUrl = ""
 
-
 chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.sync.set({
     "url": DEFAULT_URL,
@@ -55,8 +54,9 @@ const hide = () =>{
     let clearHistory = storageObj.clearHistory
     let clearTime = storageObj.clearTime
       
-    chrome.tabs.query({currentWindow: true}, (tabs) => {
+    chrome.tabs.query({currentWindow: true}, (tabs) => {  
       savedLinks = []
+
       for (let tab of tabs) {
         if (tab.url) savedLinks.push(tab.url);
         else if (tab.pendingUrl) savedLinks.push(tab.pendingUrl);
