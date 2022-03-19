@@ -97,6 +97,14 @@ const addHotkey = () => {
     })
   });
 }
+const addIncognito = () => {
+  $("#incognitoBtn").on("click", () => {
+    chrome.runtime.sendMessage({
+      type: "incognito",
+      incognitoKeyUrl: "chrome://extensions/?id=" + chrome.runtime.id
+    })
+  });
+}
 
 const addMessage = (message) => {
   chrome.runtime.sendMessage({  

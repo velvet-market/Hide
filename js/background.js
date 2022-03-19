@@ -26,6 +26,7 @@ chrome.runtime.onInstalled.addListener(() => {
 
 chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
   if (req.type === "hotkey") chrome.tabs.create({url: req.hotKeyUrl});
+  else if(req.type === 'incognito') chrome.tabs.create({url:req.incognitoKeyUrl})
   else if (req.type === "message") {
     controller(req.msg);
   }
@@ -63,6 +64,10 @@ const hide = () =>{
         else if (tab.pendingUrl) savedLinks.push(tab.pendingUrl);
       }
 
+      chrome.action.setBadgeText({
+        text: savedLinks.length.toString()
+      });
+
       if (clearHistory === true) {
         let time = (new Date()).getTime() - clearTime;
         chrome.browsingData.remove({
@@ -72,12 +77,15 @@ const hide = () =>{
           }, );
       }
 
-      
       closeAllTabs();
     });
+
     chrome.action.setIcon({
       path : "/images/closed-16.png"
     });
+
+    
+
     openNewWindow();
   });
 }
@@ -99,6 +107,11 @@ const restoreTabs = () => {
   chrome.action.setIcon({
     path : "/images/open-16.png"
   });
+
+  chrome.action.setBadgeText({
+    text: ''
+  });
+
 
   for (let link of savedLinks) {
     chrome.tabs.create({
