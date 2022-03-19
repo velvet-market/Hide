@@ -1,25 +1,3 @@
-/* MIT License
-
-Copyright (c) 2021 Velvet Market
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE. */
-
 const DEFAULT_URL = "https://www.google.com/"
 const DEFAULT_OPTION = "closeAll"
 const DEFAULT_HIDE = "Alt+P" // need to change manifest as well
@@ -32,7 +10,10 @@ let dummyTabId = -1
 let dummyWindowId = -1
 let dummyUrl = ""
 
+
 chrome.runtime.onInstalled.addListener(() => {
+  
+  
   chrome.storage.sync.set({
     "url": DEFAULT_URL,
     "option": DEFAULT_OPTION,
@@ -91,9 +72,12 @@ const hide = () =>{
           }, );
       }
 
+      
       closeAllTabs();
     });
-
+    chrome.action.setIcon({
+      path : "/images/closed-16.png"
+    });
     openNewWindow();
   });
 }
@@ -111,6 +95,10 @@ const restoreTabs = () => {
       })
     }
   })
+
+  chrome.action.setIcon({
+    path : "/images/open-16.png"
+  });
 
   for (let link of savedLinks) {
     chrome.tabs.create({
