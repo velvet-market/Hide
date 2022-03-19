@@ -2,7 +2,7 @@
     "name": "Hide!!! - Panic Button and Tab Manager",
     "author": "Eugene Li and Hao Zheng",
     "description": "Instantly hide and restore your open tabs.",
-    "version": "1.2",
+    "version": "1.3",
     "manifest_version": 3,
     "background": {
       "service_worker": "/js/background.js"
