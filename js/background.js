@@ -3,7 +3,7 @@ const DEFAULT_OPTION = "closeAll"
 const DEFAULT_HIDE = "Alt+P" // need to change manifest as well
 const DEFAULT_RESTORE = "Alt+O" // need to change manifest as well
 const DEFAULT_CLEARHISTORY = false;
-const DEFAULT_CLEARTIME = 1000 * 60 * 60;
+const DEFAULT_CLEARTIME = 60;
 
 let savedLinks = []
 let dummyTabId = -1
