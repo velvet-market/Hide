@@ -1,12 +1,18 @@
 body {
   width: 300px;
-  height: 565px;
+  height: 600px;
   background-color: whitesmoke;
 }
 
 #hotkeyBtn {
   color: white !important;
 }
+
+#incognitoBtn {
+  color: white;
+  border: 0.175rem solid black;    
+}
+
 
 #panicBtn {
   width: 65px;

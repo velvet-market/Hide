@@ -26,7 +26,7 @@ chrome.runtime.onInstalled.addListener(() => {
 
 chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
   if (req.type === "hotkey") chrome.tabs.create({url: req.hotKeyUrl});
-  else if(req.type === 'incognito') chrome.tabs.create({url:req.incognitoKeyUrl})
+  else if(req.type === 'incognito') chrome.tabs.create({url: req.incognitoKeyUrl})
   else if (req.type === "message") {
     controller(req.msg);
   }
@@ -69,7 +69,7 @@ const hide = () =>{
       });
 
       if (clearHistory === true) {
-        let time = (new Date()).getTime() - clearTime;
+        let time = (new Date()).getTime() - (clearTime * 60000);
         chrome.browsingData.remove({
             "since": time
           }, {

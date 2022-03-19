@@ -15,6 +15,7 @@ $(document).ready(() => {
 
   addConfirm();
   addHotkey();
+  addIncognito();
   addToggle();
   addPanic();
   addEnter();
@@ -44,7 +45,7 @@ const addConfirm = () => {
 
     let toggleVal = $("#historyToggle").is(":checked");
     if (toggleVal) {
-      let timeVal = $("#time").val() * 60000
+      let timeVal = $("#time").val()
 
       chrome.storage.sync.set({
         "clearTime": timeVal,
@@ -97,6 +98,7 @@ const addHotkey = () => {
     })
   });
 }
+
 const addIncognito = () => {
   $("#incognitoBtn").on("click", () => {
     chrome.runtime.sendMessage({
@@ -114,17 +116,20 @@ const addMessage = (message) => {
 }
 
 const addToggle = () => {
-  let toggle = $("#historyToggle");
-  chrome.storage.sync.get(["clearHistory"], (storageObj) => {
-    toggle.prop('checked', storageObj.clearHistory);
+  chrome.storage.sync.get(["clearHistory", "clearTime"], (storageObj) => {
+    $("#historyToggle").prop('checked', storageObj.clearHistory);
+    controlSelect(storageObj.clearHistory);
+    if (storageObj.clearTime) $("#time").val(storageObj.clearTime);
   })
-  
-  toggle.on("change", () => {
-    let status = $("#historyToggle").is(":checked");
 
-    if (status) $("#time").prop("disabled", false);
-    else $("#time").prop("disabled", true);
+  $("#historyToggle").on("change", () => {
+    controlSelect($("#historyToggle").is(":checked"));
   })
+}
+
+const controlSelect = (status) => {
+  if (status) $("#time").prop("disabled", false);
+  else $("#time").prop("disabled", true);
 }
 
 const addPanic = () =>{
