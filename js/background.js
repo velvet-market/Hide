@@ -12,8 +12,6 @@ let dummyUrl = ""
 
 
 chrome.runtime.onInstalled.addListener(() => {
-  
-  
   chrome.storage.sync.set({
     "url": DEFAULT_URL,
     "option": DEFAULT_OPTION,

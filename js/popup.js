@@ -6,7 +6,7 @@ $(document).ready(() => {
       $("#panicBtn").addClass("btn-success").removeClass("btn-danger")
       $("#panicBtn").text("😉")
       $("#panicBtn").css("box-shadow", "0px 0px 20px 5px #99ff99");
-    } else if (storageObj.logo==="/images/open-48.png"){
+    } else if (storageObj.logo==="/images/open-48.png") {
       $("#panicBtn").addClass("btn-danger").removeClass("btn-success")
       $("#panicBtn").text("💀")
       $("#panicBtn").css("box-shadow", "0px 0px 20px 5px #FF7F7F");
