@@ -1,6 +1,6 @@
 body {
   width: 300px;
-  height: 525px;
+  height: 565px;
   background-color: whitesmoke;
 }
 
@@ -8,12 +8,15 @@ body {
   color: white !important;
 }
 
-#panicBtn{
-  width: 60px;
-  height: 60px;
+#panicBtn {
+  width: 65px;
+  height: 65px;
   padding: 6px 0px;
   border-radius: 40px;
-  font-size: 25px;
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
   border: 0.175rem solid black;    
   text-align: center;
+  box-shadow: 0px 0px 20px 5px#FF7F7F;
 }
